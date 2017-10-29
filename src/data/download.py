@@ -26,6 +26,18 @@ class DownloadFile(luigi.Task):
         #tell luigi where to output to
         return luigi.LocalTarget(os.path.join(PROJECT_DIR, self.out_name))
 
+class DownloadData(luigi.Task):
+    url = 'https://onedrive.live.com/download?cid=ABD51044F5341265&resid=ABD51044F5341265%21112053&authkey=AE5A-nrvb2pC2t4'
+    out_name = 'data/external/jokes.csv'
+
+    def run(self):
+        response = requests.get(self.url, allow_redirects=True)
+        with open(self.output().path, 'wb') as f:
+            f.write(response.content)
+    def output(self):
+        #tell luigi where to output to
+        return luigi.LocalTarget(os.path.join(PROJECT_DIR, self.out_name))
+
 class DownloadAll(luigi.WrapperTask):
     def requires(self):
         yield DownloadFile(url='http://nlp.stanford.edu/data/glove.6B.zip',
