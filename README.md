@@ -19,8 +19,6 @@ This will create a new environment named _capstone_. Please note that it will do
 *  Windows: ```activate capstone```
 *  macOs and Linux: ```source activate capstone```
 
-As a final step, please intstall xgboost into this environment. Please see http://xgboost.readthedocs.io/en/latest/build.html#windows-binaries for OS specific instructions.
-
 After this has been completed, you can activate Jupyter Notebook by typing ```jupyter notebook``` into your shell. You can then explore the notebooks. The notebooks are ordered. They can be run in or out of sequence. If you run a later notebook without having run an earlier one, the prerequisite files will be created.
 
 Project Organization
@@ -46,21 +44,7 @@ Project Organization
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    └── src                <- Source code for use in this project. Generally code that is called by the Jupyter notebooks
-        ├── __init__.py    <- Makes src a Python module
-        │
-        ├── data           <- Scripts to download or generate data
-        │
-        ├── features       <- Scripts to turn raw data into features for modeling
-        │
-        ├── models         <- Scripts to train models and then use trained models to make
-        │                     predictions
-        │   
-        │   
-        │
-        └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    
-
+    └── src                <- Python functions and classes that are used by the Jupyter notebooks. Trying to follow DRY (Don't repeat yourself) principal
 
 --------
 
