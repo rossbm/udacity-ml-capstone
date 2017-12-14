@@ -4,6 +4,7 @@ from keras.layers import Embedding, Input, Dense, Masking, Dropout, SpatialDropo
 from keras.layers import LSTM, GRU
 from keras.models import Model
 from keras.optimizers import Adam
+from keras import constraints
 
 #this layer takes takes an input with a shape of n and outputs the average as 1 dimensional vector
 class GlobalAverage(Layer):
@@ -19,14 +20,24 @@ class GlobalAverage(Layer):
 
         return K.sum(inputs, axis=1,  keepdims=True) / K.sum(denom, keepdims=True)
 
+    #need to implement so can save and reload
+    def get_config(self):
+        config = {}
+        base_config = super(GlobalAverage, self).get_config()
+        return dict(list(base_config.items()) + list(config.items()))
 
-def create_model(n_hidden, rnn_type, embedding_matrix, dense_final=False, max_len=300, dropout_rate=0.15):
+
+def create_model(n_hidden, embedding_matrix, max_len=300, dropout_rate=0.15, rnn_type="LSTM", train_embed=False):
     
+    #if the embedding matrix is trainable, better up the regularizatoin
+    if train_embed:
+        dropout_rate *= 2
+
     embedding_layer = Embedding(embedding_matrix.shape[0],
                             embedding_matrix.shape[1],
                             weights=[embedding_matrix],
                             input_length=max_len,
-                            trainable=False, name = 'embedding')
+                            trainable=train_embed, name = 'embedding')
     sequence_input = Input(shape=(max_len,), dtype='int32', name='joke_seq')
     embedded_input = embedding_layer(sequence_input)
     mask1=Masking(mask_value=0., name='mask_paddings')(embedded_input)
@@ -34,24 +45,23 @@ def create_model(n_hidden, rnn_type, embedding_matrix, dense_final=False, max_le
     #should switcth to new keras argument with shape...
     drop1 = SpatialDropout1D(dropout_rate, name='drop_words')(mask1)
     #more maskning
-    mask2 = Masking(mask_value=0.)(drop1)
+    mask2 = Masking(mask_value=0., name='mask_dropped_words')(drop1)
     
     if rnn_type=="LSTM":
-        rnn = LSTM(n_hidden, implementation=2, unroll=True, name='rnn', activation="sigmoid",
+        rnn = LSTM(n_hidden, implementation=2, unroll=True, name='reccurrent_layer', activation="tanh",
                   recurrent_dropout=dropout_rate*2, dropout=dropout_rate)(mask2)
     elif rnn_type=="GRU":
-        rnn = GRU(n_hidden, implementation=2, unroll=True, name='rnn', activation="sigmoid",
+        rnn = GRU(n_hidden, implementation=2, unroll=True, name='reccurrent_layer', activation="tanh",
                   recurrent_dropout=dropout_rate*2, dropout=dropout_rate)(mask2)
 
-    if dense_final:
-        drop2 = Dropout(dropout_rate*2, name="dense_drop")(rnn)
-        preds = Dense(1, activation="sigmoid", name="dense_pred")(drop2)
-    else:
-        preds = GlobalAverage(name="avg_pred")(rnn)
+    drop2 = Dropout(dropout_rate*2, name="drop_dense")(rnn)
+    dense = Dense(int(n_hidden/2), activation="sigmoid", name="dense_sigmoid")(drop2)
+    preds = GlobalAverage(name="avg_pred")(dense)
 
     model = Model(inputs=sequence_input, outputs=preds)
     
     return model
+
 
 #train and valid should be tuples, with two elemnts
 #first element is sequences, second is labels
