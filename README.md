@@ -19,7 +19,7 @@ This will create a new environment named _capstone_. Please note that it will do
 *  Windows: ```activate capstone```
 *  macOs and Linux: ```source activate capstone```
 
-After this has been completed, you can activate Jupyter Notebook by typing ```jupyter notebook``` into your shell. You can then explore the notebooks. The notebooks are ordered. They can be run in or out of sequence. If you run a later notebook without having run an earlier one, the prerequisite files will be created.
+After this has been completed, you can activate Jupyter Notebook by typing ```jupyter notebook``` into your shell. You can then explore the notebooks. The notebooks are ordered and should be run in sequence, more or less. If you run a later notebook without having run an earlier one, it is possible that an exception will be raised since some notebook rely on the outputs of previous notebooks.
 
 Project Organization
 ------------

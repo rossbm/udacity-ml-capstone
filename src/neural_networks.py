@@ -49,10 +49,10 @@ def create_model(n_hidden, embedding_matrix, max_len=300, dropout_rate=0.15, rnn
     
     if rnn_type=="LSTM":
         rnn = LSTM(n_hidden, implementation=2, unroll=True, name='reccurrent_layer', activation="tanh",
-                  recurrent_dropout=dropout_rate*2, dropout=dropout_rate)(mask2)
+                  recurrent_dropout=dropout_rate*2, dropout=dropout_rate*2)(mask2)
     elif rnn_type=="GRU":
         rnn = GRU(n_hidden, implementation=2, unroll=True, name='reccurrent_layer', activation="tanh",
-                  recurrent_dropout=dropout_rate*2, dropout=dropout_rate)(mask2)
+                  recurrent_dropout=dropout_rate, dropout=dropout_rate*2)(mask2)
 
     drop2 = Dropout(dropout_rate*2, name="drop_dense")(rnn)
     dense = Dense(int(n_hidden/2), activation="sigmoid", name="dense_sigmoid")(drop2)
@@ -81,3 +81,4 @@ def run_model(model, train, valid, out_path, patience=25, optimizer=Adam()):
             metrics=['acc'])
     history = model.fit(x=train[0], y=train[1], epochs=1000, batch_size=2000,
                 validation_data=(valid[0], valid[1]), callbacks=[checkpointer, earlystopper], verbose=1)
+    return history
