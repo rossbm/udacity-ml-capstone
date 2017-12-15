@@ -21,18 +21,14 @@ class GlobalAverage(Layer):
         return K.sum(inputs, axis=1,  keepdims=True) / K.sum(denom, keepdims=True)
 
     #need to implement so can save and reload
-    def get_config(self):
-        config = {}
-        base_config = super(GlobalAverage, self).get_config()
-        return dict(list(base_config.items()) + list(config.items()))
+    #def get_config(self):
+        #config = {}
+        #base_config = super(GlobalAverage, self).get_config()
+        #return dict(list(base_config.items()) + list(config.items()))
 
 
 def create_model(n_hidden, embedding_matrix, max_len=300, dropout_rate=0.15, rnn_type="LSTM", train_embed=False):
     
-    #if the embedding matrix is trainable, better up the regularizatoin
-    if train_embed:
-        dropout_rate *= 2
-
     embedding_layer = Embedding(embedding_matrix.shape[0],
                             embedding_matrix.shape[1],
                             weights=[embedding_matrix],
@@ -65,20 +61,18 @@ def create_model(n_hidden, embedding_matrix, max_len=300, dropout_rate=0.15, rnn
 
 #train and valid should be tuples, with two elemnts
 #first element is sequences, second is labels
-def run_model(model, train, valid, out_path, patience=25, optimizer=Adam()):
+def run_model(model, train, valid, out_path, patience=25, optimizer=Adam(), loss="binary_crossentropy", monitor='val_loss', metrics=['acc']):
     checkpointer = ModelCheckpoint(filepath=out_path,
-                               monitor='val_loss',
+                               monitor=monitor,
                                verbose=1,
-                               mode='min',
                                save_best_only=True)
-    earlystopper = EarlyStopping(monitor='val_loss',
+    earlystopper = EarlyStopping(monitor=monitor,
                                 min_delta=0.00001,
                                 patience=patience,
-                                verbose=1,
-                                mode='min')
-    model.compile(loss='binary_crossentropy',
+                                verbose=1)
+    model.compile(loss=loss,
             optimizer=optimizer,
-            metrics=['acc'])
+            metrics=metrics)
     history = model.fit(x=train[0], y=train[1], epochs=1000, batch_size=2000,
                 validation_data=(valid[0], valid[1]), callbacks=[checkpointer, earlystopper], verbose=1)
     return history
