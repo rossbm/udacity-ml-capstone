@@ -70,6 +70,6 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
-/data/
+/data/*
 #also models, since they can be large and it should be possible to create them using the provided code
-/models/
+/models/*
