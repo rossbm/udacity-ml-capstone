@@ -2,6 +2,8 @@ from sklearn.metrics import roc_curve, auc
 import matplotlib.pyplot as plt
 import numpy as np
 
+#code adapted from http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html
+
 def roc_plot(y_true, y_preds, mdl_labels, out_path):
     n_models = len(mdl_labels)
     if n_models != len(y_preds):

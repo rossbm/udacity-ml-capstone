@@ -27,6 +27,7 @@ class GlobalAverage(Layer):
         #return dict(list(base_config.items()) + list(config.items()))
 
 class AUC_Callback(Callback):
+    #code based on jamartinh's comment from https://github.com/keras-team/keras/issues/3230
     def __init__(self, train_data, validation_data, train_auc=True, batch_size=1000):
         super(AUC_Callback, self).__init__()
         self.x = train_data[0]
