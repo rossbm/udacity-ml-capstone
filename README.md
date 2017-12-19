@@ -15,7 +15,7 @@ This will download the repo to the current directory. To ensure that you have th
 conda env create -f environment.yml
 ```
 
-This will create a new environment named _capstone_. Please note that it will download a bunch of packages. To activate the environment:
+This will create a new environment named _capstone_env_. Please note that it will download a bunch of packages. To activate the environment:
 *  Windows: ```activate capstone_env```
 *  macOs and Linux: ```source activate capstone_env```
 
