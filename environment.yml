@@ -1,4 +1,4 @@
-name: capstone
+name: capstone_env
 channels:
 - https://conda.anaconda.org/tlatorre
 - defaults
@@ -98,5 +98,5 @@ dependencies:
   - tensorflow-gpu==1.4.0
   - tensorflow-tensorboard==0.4.0rc3
   - werkzeug==0.12.2
-prefix: envs\capstone
+prefix:
 
