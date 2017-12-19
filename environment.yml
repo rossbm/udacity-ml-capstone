@@ -98,5 +98,5 @@ dependencies:
   - tensorflow-gpu==1.4.0
   - tensorflow-tensorboard==0.4.0rc3
   - werkzeug==0.12.2
-prefix: C:\Users\wertu\Anaconda3\envs\capstone
+prefix: envs\capstone
 

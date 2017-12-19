@@ -43,26 +43,6 @@ nosetests.xml
 coverage.xml
 *,cover
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# DotEnv configuration
-.env
-
-# Database
-*.db
-*.rdb
-
 # Pycharm
 .idea
 
@@ -75,4 +55,8 @@ data/external/GloVeVectors
 *.csv
 *.pkl
 *.hdf5
+*.xlsx
 
+# Database
+*.db
+*.rdb
