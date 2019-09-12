@@ -1,7 +1,7 @@
 udacity-ML-capstone
 ==============================
 
-This github repo contains my final project for Udacity's Machine Learning Nanodegree. It contains my final report and all the necessary code to reproduce my results. I have setup a live demo of the final model on my personal website: http://www.beck-macneil.ca/evaluate-joke. Give it whirl!
+This github repo contains my final project for Udacity's Machine Learning Nanodegree. It contains my final report and all the necessary code to reproduce my results.
 
 Setup Instructions
 -------------
